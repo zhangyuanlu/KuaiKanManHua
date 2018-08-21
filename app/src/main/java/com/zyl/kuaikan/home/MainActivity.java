@@ -4,8 +4,12 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -14,6 +18,7 @@ import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.adapter.CartoonItemAdapter;
 import com.zyl.kuaikan.base.BaseActivity;
 import com.zyl.kuaikan.bean.PopularCartoon;
+import com.zyl.kuaikan.bean.SearchAutoComp;
 import com.zyl.kuaikan.util.Utilities;
 
 import java.util.ArrayList;
@@ -22,12 +27,15 @@ import java.util.Date;
 import java.util.List;
 
 
-public class MainActivity extends BaseActivity<HomePageContract.Presenter> implements HomePageContract.View,AdapterView.OnItemClickListener{
+public class MainActivity extends BaseActivity<HomePageContract.Presenter> implements HomePageContract.View,AdapterView.OnItemClickListener,TextWatcher{
     private static final String TAG="MainActivity";
-    private List<PopularCartoon> list=new ArrayList<>();
+    private List<PopularCartoon> list;
     private AutoCompleteTextView textViewInput;
     private Button bt_search,bt_day1,bt_day2,bt_day3,bt_day4,bt_day5,bt_day6,bt_day7;
     private CartoonItemAdapter mAdapter;
+    private ArrayAdapter<String> mSearchAdapter;
+    private String[] mSearchArray;
+    private List<SearchAutoComp.DataBean.TopicBean> autoComps=null;
     private GridView mGridView;
     private ContentLoadingProgressBar progressBar;
     private int dayIndex=0;
@@ -37,7 +45,13 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        list=new ArrayList<>();
+        mAdapter=new CartoonItemAdapter(this);
+        mSearchArray=new String[]{};
+        mSearchAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,mSearchArray);
+
         initView();
+        changeDayText();
         presenter.loadPopCartoons(false,0);
     }
     private void initView(){
@@ -53,6 +67,7 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
         bt_day7=findViewById(R.id.bt_day7);
         mGridView=findViewById(R.id.gridView);
         progressBar=findViewById(R.id.progressbar);
+        textViewInput.addTextChangedListener(this);
         bt_search.setOnClickListener(this);
         bt_day1.setOnClickListener(this);
         bt_day2.setOnClickListener(this);
@@ -63,9 +78,8 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
         bt_day7.setOnClickListener(this);
         mGridView.setOnItemClickListener(this);
         mGridView.setEmptyView(progressBar);
-        mAdapter=new CartoonItemAdapter(this);
         mGridView.setAdapter(mAdapter);
-        changeDayText();
+        textViewInput.setAdapter(mSearchAdapter);
     }
 
     @Override
@@ -172,6 +186,17 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
     }
 
     @Override
+    public void setSearchAutoComp(SearchAutoComp searchAutoComp) {
+        autoComps=searchAutoComp.getData().getTopic();
+        mSearchArray=new String[autoComps.size()];
+        for(int i=0;i<autoComps.size();i++){
+            mSearchArray[i]=autoComps.get(i).getTitle();
+            Log.e(TAG," mSearchArray[i]="+ mSearchArray[i]);
+        }
+        mSearchAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
     }
@@ -184,5 +209,21 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        String keyWord=editable.toString();
+        presenter.getAutoCompBindList(keyWord);
     }
 }

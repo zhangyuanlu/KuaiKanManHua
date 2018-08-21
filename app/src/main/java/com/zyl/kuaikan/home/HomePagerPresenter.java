@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.zyl.kuaikan.API.RetrofitFactory;
 import com.zyl.kuaikan.base.BasePresenterImpl;
+import com.zyl.kuaikan.bean.SearchAutoComp;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class HomePagerPresenter extends BasePresenterImpl<HomePageContract.View>
 
     @Override
     public void loadPopCartoons(boolean forceUpdate,int index) {
-        RetrofitFactory.getInstance()
+        RetrofitFactory.getInstance(RetrofitFactory.TYPE_GET_POPLIST)
                 .getPopCartoons(index)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -37,6 +38,33 @@ public class HomePagerPresenter extends BasePresenterImpl<HomePageContract.View>
                     public void accept(List list) throws Exception {
                         view.dismissLoadingDialog();
                         view.setDayPops(list);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        view.dismissLoadingDialog();
+                        Log.e(TAG,throwable.toString());
+                        throwable.printStackTrace();
+                    }
+                });
+    }
+
+    @Override
+    public void getAutoCompBindList(String keyWord) {
+        RetrofitFactory.getInstance(RetrofitFactory.TYPE_GET_AUTO_KEYLIST)
+                .getAboutKeywordList(keyWord)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        addDisposable(disposable);
+                    }
+                })
+                .subscribe(new Consumer<SearchAutoComp>() {
+                    @Override
+                    public void accept(SearchAutoComp searchAutoComp) throws Exception {
+                        view.setSearchAutoComp(searchAutoComp);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

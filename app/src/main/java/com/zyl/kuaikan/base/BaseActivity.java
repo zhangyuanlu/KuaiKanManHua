@@ -38,7 +38,6 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
         context=this;
         MyApplication.getInstance().addActivity(this);
         presenter=initPresenter();
-        Utilities.testJson();
     }
 
     @Override
