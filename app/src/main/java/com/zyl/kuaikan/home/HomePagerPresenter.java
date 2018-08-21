@@ -2,7 +2,7 @@ package com.zyl.kuaikan.home;
 
 import android.util.Log;
 
-import com.zyl.kuaikan.API.RetrofitFactory;
+import com.zyl.kuaikan.api.RetrofitFactory;
 import com.zyl.kuaikan.base.BasePresenterImpl;
 import com.zyl.kuaikan.bean.SearchAutoComp;
 

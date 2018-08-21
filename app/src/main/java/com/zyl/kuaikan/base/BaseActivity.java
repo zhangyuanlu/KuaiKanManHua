@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.applicaiton.MyApplication;
+import com.zyl.kuaikan.login.LoginActivity;
 import com.zyl.kuaikan.util.Utilities;
 
 
@@ -75,7 +76,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
                 break;
             }
             case R.id.tv_login:{
-
+                startActivity(this, LoginActivity.class);
                 break;
             }
             case R.id.tv_register:{

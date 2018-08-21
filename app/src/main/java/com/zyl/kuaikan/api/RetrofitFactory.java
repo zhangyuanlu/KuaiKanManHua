@@ -1,4 +1,4 @@
-package com.zyl.kuaikan.API;
+package com.zyl.kuaikan.api;
 
 
 import android.util.Log;
@@ -16,6 +16,9 @@ public class RetrofitFactory {
     private static final int TIMEOUT=10;
     public static final int TYPE_GET_POPLIST=100;
     public static final int TYPE_GET_AUTO_KEYLIST=200;
+    public static final int TYPE_AUTO_LOGIN=300;
+    public static final int TYPE_AUTO_LOGIN_REMEMBER=301;
+    public static final int TYPE_AUTO_LOGIN_WITHCODE=302;
     private static OkHttpClient okHttpClient=new OkHttpClient.Builder()
             .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
@@ -40,6 +43,7 @@ public class RetrofitFactory {
                         .create(RetrofitService.class);
                 break;
             }
+            case TYPE_AUTO_LOGIN:
             case TYPE_GET_AUTO_KEYLIST:{
                 retrofitService = new Retrofit.Builder()
                         .baseUrl(RetrofitService.BaseUrl)
