@@ -33,8 +33,6 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
     private AutoCompleteTextView textViewInput;
     private Button bt_search,bt_day1,bt_day2,bt_day3,bt_day4,bt_day5,bt_day6,bt_day7;
     private CartoonItemAdapter mAdapter;
-    private ArrayAdapter<String> mSearchAdapter;
-    private String[] mSearchArray;
     private List<SearchAutoComp.DataBean.TopicBean> autoComps=null;
     private GridView mGridView;
     private ContentLoadingProgressBar progressBar;
@@ -47,8 +45,6 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
 
         list=new ArrayList<>();
         mAdapter=new CartoonItemAdapter(this);
-        mSearchArray=new String[]{};
-        mSearchAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,mSearchArray);
 
         initView();
         changeDayText();
@@ -79,7 +75,6 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
         mGridView.setOnItemClickListener(this);
         mGridView.setEmptyView(progressBar);
         mGridView.setAdapter(mAdapter);
-        textViewInput.setAdapter(mSearchAdapter);
     }
 
     @Override
@@ -159,16 +154,6 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
     }
 
     @Override
-    public void showloadingDialog(String msg) {
-
-    }
-
-    @Override
-    public void dismissLoadingDialog() {
-
-    }
-
-    @Override
     public HomePageContract.Presenter initPresenter() {
         return new HomePagerPresenter(this);
     }
@@ -188,11 +173,12 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
     @Override
     public void setSearchAutoComp(SearchAutoComp searchAutoComp) {
         autoComps=searchAutoComp.getData().getTopic();
-        mSearchArray=new String[autoComps.size()];
+        String[] mSearchArray=new String[autoComps.size()];
         for(int i=0;i<autoComps.size();i++){
             mSearchArray[i]=autoComps.get(i).getTitle();
-            Log.e(TAG," mSearchArray[i]="+ mSearchArray[i]);
         }
+        ArrayAdapter<String> mSearchAdapter=new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line,mSearchArray);
+        textViewInput.setAdapter(mSearchAdapter);
         mSearchAdapter.notifyDataSetChanged();
     }
 

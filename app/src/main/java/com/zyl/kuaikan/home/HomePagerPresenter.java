@@ -2,7 +2,7 @@ package com.zyl.kuaikan.home;
 
 import android.util.Log;
 
-import com.zyl.kuaikan.API.RetrofitFactory;
+import com.zyl.kuaikan.api.RetrofitFactory;
 import com.zyl.kuaikan.base.BasePresenterImpl;
 import com.zyl.kuaikan.bean.SearchAutoComp;
 
@@ -30,19 +30,17 @@ public class HomePagerPresenter extends BasePresenterImpl<HomePageContract.View>
                     @Override
                     public void accept(Disposable disposable) throws Exception {
                         addDisposable(disposable);
-                        view.showloadingDialog("");
+                        view.showToastMsg("");
                     }
                 })
                 .subscribe(new Consumer<List>() {
                     @Override
                     public void accept(List list) throws Exception {
-                        view.dismissLoadingDialog();
                         view.setDayPops(list);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        view.dismissLoadingDialog();
                         Log.e(TAG,throwable.toString());
                         throwable.printStackTrace();
                     }
@@ -69,7 +67,6 @@ public class HomePagerPresenter extends BasePresenterImpl<HomePageContract.View>
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        view.dismissLoadingDialog();
                         Log.e(TAG,throwable.toString());
                         throwable.printStackTrace();
                     }

@@ -1,6 +1,4 @@
-package com.zyl.kuaikan.API;
-
-import android.util.Log;
+package com.zyl.kuaikan.api;
 
 import com.zyl.kuaikan.bean.PopularCartoon;
 

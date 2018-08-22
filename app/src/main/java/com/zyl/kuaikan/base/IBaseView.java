@@ -5,6 +5,5 @@ package com.zyl.kuaikan.base;
  */
 
 public interface IBaseView<T>{
-    void showloadingDialog(String msg);
-    void dismissLoadingDialog();
+    void showToastMsg(String msg);
 }

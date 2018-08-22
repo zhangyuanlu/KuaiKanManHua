@@ -7,13 +7,16 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.applicaiton.MyApplication;
+import com.zyl.kuaikan.login.LoginActivity;
 import com.zyl.kuaikan.util.Utilities;
 
 
@@ -75,7 +78,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
                 break;
             }
             case R.id.tv_login:{
-
+                startActivity(this, LoginActivity.class);
                 break;
             }
             case R.id.tv_register:{
@@ -97,12 +100,9 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
     public abstract P initPresenter();
 
     @Override
-    public void dismissLoadingDialog() {
-
-    }
-
-    @Override
-    public void showloadingDialog(String msg) {
-
+    public void showToastMsg(String msg) {
+        if(!TextUtils.isEmpty(msg)){
+            Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
+        }
     }
 }
