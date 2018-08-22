@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv_cover"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        fresco:placeholderImage="@drawable/item_placeholder" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="作品名称"
+        app:layout_constraintTop_toBottomOf="@id/sdv_cover" />
+
+    <TextView
+        android:id="@+id/tv_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="作者"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="漫画简介"
+        app:layout_constraintTop_toBottomOf="@id/tv_author" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="5dp"
+        android:background="#FFE600"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@id/textView"
+        app:layout_constraintTop_toBottomOf="@id/textView" />
+    <TextView
+        android:id="@+id/tv_brief"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:layout_marginTop="10dp"
+        android:text="这里就是一些漫画的简介，最多显示两行"
+        app:layout_constraintTop_toBottomOf="@id/view"/>
+    <Button
+        android:id="@+id/bt_more_brief"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="center"
+        android:text="展开"
+        android:drawableRight="@drawable/ic_expand_more_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_brief" />
+    <TextView
+        android:id="@+id/tv_heat_index"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="6311万"
+        app:layout_constraintTop_toBottomOf="@id/bt_more_brief"
+        app:layout_constraintStart_toStartOf="@id/bt_go_first"
+        app:layout_constraintEnd_toEndOf="@id/bt_go_first"/>
+    <TextView
+        android:id="@+id/tv_pop_index"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="73万"
+        app:layout_constraintTop_toBottomOf="@id/bt_more_brief"
+        app:layout_constraintStart_toStartOf="@id/bt_follow"
+        app:layout_constraintEnd_toEndOf="@id/bt_follow"/>
+    <Button
+        android:id="@+id/bt_go_first"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/firstchapter_button_shape"
+        android:text="查看第一话"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/tv_heat_index" />
+
+    <Button
+        android:id="@+id/bt_follow"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/nofollow_button_shape"
+        android:text="关注"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_go_first"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+</android.support.constraint.ConstraintLayout>
