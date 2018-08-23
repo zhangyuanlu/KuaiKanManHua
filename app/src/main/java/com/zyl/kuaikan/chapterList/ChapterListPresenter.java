@@ -1,4 +1,4 @@
-package com.zyl.kuaikan.ChapterList;
+package com.zyl.kuaikan.chapterList;
 
 import android.util.Log;
 

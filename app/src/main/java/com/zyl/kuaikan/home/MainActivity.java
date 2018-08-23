@@ -1,13 +1,11 @@
 package com.zyl.kuaikan.home;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,7 +13,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.GridView;
 
-import com.zyl.kuaikan.ChapterList.ChapterListActivity;
+import com.zyl.kuaikan.chapterList.ChapterListActivity;
 import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.adapter.CartoonItemAdapter;
 import com.zyl.kuaikan.base.BaseActivity;

@@ -1,10 +1,8 @@
-package com.zyl.kuaikan.ChapterList;
+package com.zyl.kuaikan.chapterList;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 
 import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.adapter.ChapterListAdapter;

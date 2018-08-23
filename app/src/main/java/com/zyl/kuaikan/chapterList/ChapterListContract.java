@@ -1,4 +1,4 @@
-package com.zyl.kuaikan.ChapterList;
+package com.zyl.kuaikan.chapterList;
 
 import com.zyl.kuaikan.base.IBasePresenter;
 import com.zyl.kuaikan.base.IBaseView;

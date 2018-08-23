@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.zyl.kuaikan.ChapterList.ChapterListActivity">
+    tools:context="com.zyl.kuaikan.chapterList.ChapterListActivity">
     <include
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
