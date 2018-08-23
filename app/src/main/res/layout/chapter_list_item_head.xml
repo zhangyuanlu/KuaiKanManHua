@@ -54,22 +54,35 @@
         android:layout_marginTop="10dp"
         android:text="这里就是一些漫画的简介，最多显示两行"
         app:layout_constraintTop_toBottomOf="@id/view"/>
-    <Button
-        android:id="@+id/bt_more_brief"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:id="@+id/layout_more_brief"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@null"
-        android:gravity="center"
-        android:text="展开"
-        android:drawableRight="@drawable/ic_expand_more_black"
+        android:orientation="horizontal"
+        android:gravity="end"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_brief" />
+        app:layout_constraintTop_toBottomOf="@id/tv_brief">
+        <Button
+            android:id="@+id/bt_more_brief"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="center"
+            android:text="展开" />
+        <ImageView
+            android:id="@+id/iv_more_brief"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_expand_more_black" />
+    </LinearLayout>
     <TextView
         android:id="@+id/tv_heat_index"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="6311万"
-        app:layout_constraintTop_toBottomOf="@id/bt_more_brief"
+        app:layout_constraintTop_toBottomOf="@id/layout_more_brief"
         app:layout_constraintStart_toStartOf="@id/bt_go_first"
         app:layout_constraintEnd_toEndOf="@id/bt_go_first"/>
     <TextView
@@ -77,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="73万"
-        app:layout_constraintTop_toBottomOf="@id/bt_more_brief"
+        app:layout_constraintTop_toBottomOf="@id/layout_more_brief"
         app:layout_constraintStart_toStartOf="@id/bt_follow"
         app:layout_constraintEnd_toEndOf="@id/bt_follow"/>
     <Button
