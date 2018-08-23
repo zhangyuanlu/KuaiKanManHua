@@ -1,5 +1,6 @@
 package com.zyl.kuaikan.home;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.GridView;
 
+import com.zyl.kuaikan.ChapterList.ChapterListActivity;
 import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.adapter.CartoonItemAdapter;
 import com.zyl.kuaikan.base.BaseActivity;
@@ -158,10 +160,6 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
         return new HomePagerPresenter(this);
     }
 
-    @Override
-    public void setCarouseList(List<Bitmap> bitmaps) {
-
-    }
 
     @Override
     public void setDayPops(List<PopularCartoon> popularCartoons) {
@@ -194,7 +192,10 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        String url=list.get(position).getUrlDetail();
+        Intent intent=new Intent(this,ChapterListActivity.class);
+        intent.putExtra("url",url);
+        startActivity(intent);
     }
 
     @Override

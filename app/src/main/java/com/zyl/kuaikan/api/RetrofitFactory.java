@@ -15,6 +15,7 @@ public class RetrofitFactory {
     private static final String TAG="RetrofitFactory";
     private static final int TIMEOUT=10;
     public static final int TYPE_GET_POPLIST=100;
+    public static final int TYPE_GET_CHAPTERLIST=101;
     public static final int TYPE_GET_AUTO_KEYLIST=200;
     public static final int TYPE_AUTO_LOGIN=300;
 
@@ -34,11 +35,12 @@ public class RetrofitFactory {
     public static RetrofitService getInstance(int type){
         retrofitService=null;
         switch (type){
+            case TYPE_GET_CHAPTERLIST:
             case TYPE_GET_POPLIST:{
                 retrofitService = new Retrofit.Builder()
                         .baseUrl(RetrofitService.BaseUrl)
                         .client(okHttpClient)
-                        .addConverterFactory(PopCartoonsFactory.create())
+                        .addConverterFactory(Html2BeanFactory.create())
                         .addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build()
                         .create(RetrofitService.class);
                 break;

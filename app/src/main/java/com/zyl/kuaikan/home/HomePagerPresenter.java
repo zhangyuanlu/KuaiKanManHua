@@ -30,7 +30,6 @@ public class HomePagerPresenter extends BasePresenterImpl<HomePageContract.View>
                     @Override
                     public void accept(Disposable disposable) throws Exception {
                         addDisposable(disposable);
-                        view.showToastMsg("");
                     }
                 })
                 .subscribe(new Consumer<List>() {

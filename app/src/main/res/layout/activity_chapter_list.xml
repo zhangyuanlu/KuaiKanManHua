@@ -9,12 +9,13 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout="@layout/title_bar" />
+        layout="@layout/title_bar" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="10dp">
     </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>
