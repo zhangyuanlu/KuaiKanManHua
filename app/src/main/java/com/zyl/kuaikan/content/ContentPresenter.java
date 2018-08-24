@@ -1,28 +1,27 @@
-package com.zyl.kuaikan.chapterList;
+package com.zyl.kuaikan.content;
 
 import android.util.Log;
 
 import com.zyl.kuaikan.api.RetrofitFactory;
 import com.zyl.kuaikan.base.BasePresenterImpl;
-import com.zyl.kuaikan.bean.ChapterListBean;
+import com.zyl.kuaikan.bean.ChapterContentBean;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class ChapterListPresenter extends BasePresenterImpl<ChapterListContract.View> implements ChapterListContract.Presenter {
-
-    public static String TAG="ChapterListPresenter";
-
-    public ChapterListPresenter(ChapterListContract.View view){
+public class ContentPresenter extends BasePresenterImpl<ContentContract.View> implements ContentContract.Presenter{
+    private static final String TAG="ContentPresenter";
+    public ContentPresenter(ContentContract.View view){
         super(view);
     }
+
     @Override
-    public void loadChapterList(String url) {
-        Log.i(TAG,"url="+url);
-        RetrofitFactory.getInstance(RetrofitFactory.TYPE_GET_CHAPTERLIST)
-                .getChapterList(url).subscribeOn(Schedulers.io())
+    public void loadChapterContent(String url) {
+        RetrofitFactory.getInstance(RetrofitFactory.TYPE_GET_CHAPTERCONTENT)
+                .getChapterContent(url)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -30,10 +29,10 @@ public class ChapterListPresenter extends BasePresenterImpl<ChapterListContract.
                         addDisposable(disposable);
                     }
                 })
-                .subscribe(new Consumer<ChapterListBean>() {
+                .subscribe(new Consumer<ChapterContentBean>() {
                     @Override
-                    public void accept(ChapterListBean chapterListBean) throws Exception {
-                        view.setChapterList(chapterListBean);
+                    public void accept(ChapterContentBean chapterContentBean) throws Exception {
+                        view.setChapterContent(chapterContentBean);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

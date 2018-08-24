@@ -2,6 +2,7 @@ package com.zyl.kuaikan.api;
 
 import android.util.Log;
 
+import com.zyl.kuaikan.bean.ChapterContentBean;
 import com.zyl.kuaikan.bean.ChapterListBean;
 import com.zyl.kuaikan.bean.PopularCartoon;
 
@@ -34,9 +35,41 @@ public class Html2BeanFactory extends Converter.Factory {
             return new Html2BeanFactory.PopCartoonsBody<Type>();
         }else if(type== ChapterListBean.class){
             return new Html2BeanFactory.ChapterListBody<ChapterListBean>();
+        }else if(type==ChapterContentBean.class){
+            return new Html2BeanFactory.ChapterContentBody<ChapterContentBean>();
         }
         return null;
     }
+
+    private static class ChapterContentBody<T> implements Converter<ResponseBody,T>{
+        @Override
+        public T convert(ResponseBody value) {
+            ChapterContentBean contentBean=new ChapterContentBean();
+            List<String> urlList=new ArrayList<>();
+            Document document=null;
+            try{
+                document=Jsoup.parse(value.string());
+            }catch (IOException ex){
+                ex.printStackTrace();
+                return null;
+            }
+            String tmpString;
+            Element element=document.select("div.ft").get(0);
+            tmpString=element.select("a[href]").get(0).attr("href");
+            contentBean.setLastUrl(tmpString);
+            tmpString=element.select("a[href]").get(1).attr("href");
+            Log.e(TAG,"url="+tmpString);
+            contentBean.setNextUrl(tmpString);
+            element=document.select(".list").select(".comic-imgs").first();
+            for(Element e:element.getElementsByTag("img")){
+                tmpString=e.attr("src");
+                Log.e(TAG,"url="+tmpString);
+                urlList.add(tmpString);
+            }
+            return (T)contentBean;
+        }
+    }
+
     private static class ChapterListBody<T> implements Converter<ResponseBody,T>{
         @Override
         public T convert(ResponseBody value) {

@@ -2,11 +2,10 @@ package com.zyl.kuaikan.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,7 +23,7 @@ import com.zyl.kuaikan.bean.ChapterListBean;
 
 import java.util.List;
 
-public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnTouchListener{
+public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener{
 
     public static final String TAG="ChapterListAdapter";
     public static final int TYPE_HEAD=1;
@@ -35,11 +34,12 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private ChapterListBean chapterListBean;
     private FootAdapter footAdapter;
     private OnRecyclerViewItemClickListener mListener;
+
     public interface OnRecyclerViewItemClickListener{
-        void onClickChapter(int position);
+        void onClickChapter(String url);
         void onFollow();
-        void onFirstChapter();
-        void onCommonCartoon();
+        void onFirstChapter(String url);
+        void onCommonCartoon(String url);
     }
     public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener listener){
         this.mListener=listener;
@@ -66,6 +66,7 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             case TYPE_NORMAL:{
                 View view=layoutInflater.inflate(R.layout.chapter_list_item_normal,null);
+                view.setOnClickListener(this);
                 viewHolder=new NormalViewHolder(view);
                 break;
             }
@@ -94,6 +95,7 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((NormalViewHolder) holder).tv_title.setText(chapterListBean.getChapterItems().get(position-1).getChapterTitle());
             ((NormalViewHolder) holder).tv_index.setText(chapterListBean.getChapterItems().get(position-1).getChapterPraise());
             ((NormalViewHolder) holder).tv_time.setText(chapterListBean.getChapterItems().get(position-1).getChapterTime());
+            holder.itemView.setTag(chapterListBean.getChapterItems().get(position-1).getChapterUrl());
         }else if(holder instanceof FootViewHolder){
             if(((FootViewHolder) holder).recyclerView.getAdapter()==null) {
                 ((FootViewHolder) holder).recyclerView.setAdapter(footAdapter);
@@ -122,16 +124,10 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        switch (view.getId()){
-            case R.id.layout_foot_brief:{
-
-                break;
-            }
-            default:
-                break;
+    public void onClick(View v) {
+        if(mListener!=null){
+            mListener.onClickChapter((String) v.getTag());
         }
-        return false;
     }
 
     class HeadViewHolder extends RecyclerView.ViewHolder{
@@ -156,19 +152,22 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             bt_first.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onFirstChapter();
+                    if(mListener!=null) {
+                        mListener.onFirstChapter(chapterListBean.getChapterItems().get(0).getChapterUrl());
+                    }
                 }
             });
             bt_follow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onFollow();
+                    if(mListener!=null) {
+                        mListener.onFollow();
+                    }
                 }
             });
             bt_more_brief.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.e(TAG,"test");
                     Drawable drawable;
                     if(tv_brief.getMaxLines()==2){
                         tv_brief.setMaxLines(5);
@@ -203,11 +202,13 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             recyclerView.setLayoutManager(layoutManager);
         }
     }
-    class FootAdapter extends RecyclerView.Adapter<FootAdapter.ViewHolder>{
+    class FootAdapter extends RecyclerView.Adapter<FootAdapter.ViewHolder> implements View.OnTouchListener{
         private Context mContext;
         private List<ChapterListBean.CommonCartoon> commonCartoonList;
+        private Handler mHandler;
         public FootAdapter(Context context){
             this.mContext=context;
+            mHandler=new Handler();
         }
         public void bindData(List<ChapterListBean.CommonCartoon> list){
             this.commonCartoonList=list;
@@ -217,6 +218,7 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view= LayoutInflater.from(mContext).inflate(R.layout.chapter_list_item_foot_item,null);
+            view.setOnTouchListener(this);
             ViewHolder holder=new ViewHolder(view);
             return holder;
         }
@@ -228,6 +230,7 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             holder.tv_praise.setText(commonCartoonList.get(position).getPraiseIndex());
             holder.tv_discuss.setText(commonCartoonList.get(position).getDiscussIndex());
             holder.tv_brief.setText(commonCartoonList.get(position).getBrief());
+            holder.itemView.setTag(commonCartoonList.get(position).getUrl());
         }
 
         @Override
@@ -247,8 +250,32 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 tv_discuss=view.findViewById(R.id.tv_foot_discuss);
                 tv_brief=view.findViewById(R.id.tv_foot_brief);
                 layout_brief=view.findViewById(R.id.layout_foot_brief);
-                layout_brief.setOnTouchListener(ChapterListAdapter.this);
             }
+        }
+
+        /**
+         * 由于RecycleView会将MOVE事件拦截，导致onTouch事件收不到DOWN_UP，此处非最优解
+         * @param view
+         * @param motionEvent
+         * @return
+         */
+        @Override
+        public boolean onTouch(final View view, MotionEvent motionEvent) {
+            if(motionEvent.getAction()== MotionEvent.ACTION_DOWN){
+                view.findViewById(R.id.layout_foot_brief).setVisibility(View.VISIBLE);
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.findViewById(R.id.layout_foot_brief).setVisibility(View.GONE);
+                    }
+                },1000);
+
+            }else if(motionEvent.getAction()== MotionEvent.ACTION_UP){
+                if(mListener!=null) {
+                    mListener.onCommonCartoon((String) view.getTag());
+                }
+            }
+            return true;
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.zyl.kuaikan.api;
 
 
+import com.zyl.kuaikan.bean.ChapterContentBean;
 import com.zyl.kuaikan.bean.ChapterListBean;
 import com.zyl.kuaikan.bean.LoginUserBean;
 import com.zyl.kuaikan.bean.UserTopicsBean;
@@ -69,4 +70,12 @@ public interface RetrofitService {
      */
     @GET("{url}")
     Observable<ChapterListBean> getChapterList(@Path("url") String url);
+
+    /**
+     * 获取章节的具体内容
+     * @param url
+     * @return
+     */
+    @GET("{url}")
+    Observable<ChapterContentBean> getChapterContent(@Path("url")String url);
 }
