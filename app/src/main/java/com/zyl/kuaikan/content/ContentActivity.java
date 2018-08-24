@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.adapter.ChapterContentAdapter;
 import com.zyl.kuaikan.base.BaseActivity;
@@ -22,7 +23,6 @@ public class ContentActivity extends BaseActivity<ContentContract.Presenter> imp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
         url=getIntent().getStringExtra("url");
-        Log.e(TAG,"url="+url);
         initView();
         presenter.loadChapterContent(url);
     }
@@ -30,7 +30,7 @@ public class ContentActivity extends BaseActivity<ContentContract.Presenter> imp
     private void initView(){
         super.initView(this);
         recyclerView=findViewById(R.id.recyclerView);
-        View emptyView=findViewById(R.id.progressbar);
+        View emptyView=findViewById(R.id.empty_view);
         contentAdapter=new ChapterContentAdapter(this);
         contentAdapter.setonClickItemListener(this);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);

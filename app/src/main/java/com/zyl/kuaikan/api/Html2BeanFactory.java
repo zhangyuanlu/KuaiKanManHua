@@ -54,18 +54,25 @@ public class Html2BeanFactory extends Converter.Factory {
                 return null;
             }
             String tmpString;
-            Element element=document.select("div.ft").get(0);
-            tmpString=element.select("a[href]").get(0).attr("href");
-            contentBean.setLastUrl(tmpString);
-            tmpString=element.select("a[href]").get(1).attr("href");
-            Log.e(TAG,"url="+tmpString);
-            contentBean.setNextUrl(tmpString);
-            element=document.select(".list").select(".comic-imgs").first();
+            Elements elements=document.select("div.ft").get(0).getElementsByTag("li");
+            if(!elements.get(0).hasClass("disable")){
+                tmpString=elements.get(0).selectFirst("a[href]").attr("href");
+                contentBean.setLastUrl(tmpString);
+            }else{
+                contentBean.setLastUrl(null);
+            }
+            if(!elements.get(1).hasClass("disable")){
+                tmpString=elements.get(0).selectFirst("a[href]").attr("href");
+                contentBean.setNextUrl(tmpString);
+            }else{
+                contentBean.setNextUrl(null);
+            }
+            Element element=document.select(".list").select(".comic-imgs").first();
             for(Element e:element.getElementsByTag("img")){
-                tmpString=e.attr("src");
-                Log.e(TAG,"url="+tmpString);
+                tmpString=e.attr("data-kksrc");
                 urlList.add(tmpString);
             }
+            contentBean.setPictureList(urlList);
             return (T)contentBean;
         }
     }
