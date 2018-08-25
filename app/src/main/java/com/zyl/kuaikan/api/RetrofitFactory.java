@@ -3,6 +3,8 @@ package com.zyl.kuaikan.api;
 
 import android.util.Log;
 
+import com.zyl.kuaikan.applicaiton.MyApplication;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -27,7 +29,8 @@ public class RetrofitFactory {
                     Log.e(TAG,"http msg: "+message);
                 }
             }).setLevel(HttpLoggingInterceptor.Level.BASIC))
-            .cookieJar(new CookieManager())
+            .addInterceptor(new ReceivedCookiesInterceptor(MyApplication.getApp()))
+            .addInterceptor(new AddCookiesInterceptor(MyApplication.getApp()))
             .connectTimeout(TIMEOUT,TimeUnit.SECONDS)
             .readTimeout(TIMEOUT,TimeUnit.SECONDS)
             .build();

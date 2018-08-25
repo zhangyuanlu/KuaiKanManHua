@@ -1,5 +1,6 @@
 package com.zyl.kuaikan.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -84,7 +85,11 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
     @Override
     public void successLogin(LoginUserBean user) {
         showToastMsg(getString(R.string.login_success));
-        layout_login_progress.setVisibility(View.GONE);
+        Intent intent=new Intent();
+        String userName=user.getData().getUser().getNickname();
+        intent.putExtra("userName",userName);
+        setResult(BaseActivity.REQUEST_CODE_LOGIN,intent);
+        finish();
     }
 
     @Override

@@ -22,6 +22,11 @@ import com.zyl.kuaikan.util.Utilities;
 
 public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatActivity implements IBaseView,View.OnClickListener{
     private static final String TAG="BaseActivity";
+    public static final int REQUEST_CODE_HOME=1;
+    public static final int REQUEST_CODE_AUTHOR=2;
+    public static final int REQUEST_CODE_LOGIN=3;
+    public static final int REQUEST_CODE_REGISTER=4;
+    public static final int REQUEST_CODE_FOLLOW=5;
     protected P presenter;
     public Context context;
     private TextView tv_homePager;
@@ -78,7 +83,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
                 break;
             }
             case R.id.tv_login:{
-                startActivity(this, LoginActivity.class);
+                startActivity(this, LoginActivity.class,REQUEST_CODE_LOGIN);
                 break;
             }
             case R.id.tv_register:{
@@ -91,10 +96,9 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
             }
         }
     }
-
-    public void startActivity(Activity activity,Class<? extends BaseActivity> clas){
+    public void startActivity(Activity activity,Class<? extends BaseActivity> clas,int requestCode){
         Intent intent=new Intent(activity,clas);
-        startActivity(intent);
+        startActivityForResult(intent,requestCode);
     }
 
     public abstract P initPresenter();
@@ -103,6 +107,16 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
     public void showToastMsg(String msg) {
         if(!TextUtils.isEmpty(msg)){
             Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_CODE_LOGIN&&resultCode==REQUEST_CODE_LOGIN){
+            String userName=data.getStringExtra("userName");
+            tv_register.setVisibility(View.GONE);
+            tv_login.setText(userName);
         }
     }
 }
