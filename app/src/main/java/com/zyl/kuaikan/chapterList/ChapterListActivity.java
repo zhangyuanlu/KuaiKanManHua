@@ -74,8 +74,6 @@ public class ChapterListActivity extends BaseActivity<ChapterListContract.Presen
 
     @Override
     public void onCommonCartoon(String url) {
-        chapterListAdapter.bindData(null);
-        chapterListAdapter.notifyDataSetChanged();
         presenter.loadChapterList(url);
     }
 }

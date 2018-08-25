@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:gravity="center"
+            android:gravity="center_vertical|end"
             android:text="展开" />
         <ImageView
             android:id="@+id/iv_more_brief"

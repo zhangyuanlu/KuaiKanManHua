@@ -153,7 +153,7 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View view) {
                     if(mListener!=null) {
-                        mListener.onFirstChapter(chapterListBean.getChapterItems().get(0).getChapterUrl());
+                        mListener.onFirstChapter(chapterListBean.getChapterItems().get(chapterListBean.getChapterItems().size()-1).getChapterUrl());
                     }
                 }
             });

@@ -55,17 +55,18 @@ public class Html2BeanFactory extends Converter.Factory {
             }
             String tmpString;
             Elements elements=document.select("div.ft").get(0).getElementsByTag("li");
-            if(!elements.get(0).hasClass("disable")){
+
+            if(elements.get(0).select("a[href]").size()==0){
+                contentBean.setLastUrl(null);
+            }else{
                 tmpString=elements.get(0).selectFirst("a[href]").attr("href");
                 contentBean.setLastUrl(tmpString);
-            }else{
-                contentBean.setLastUrl(null);
             }
-            if(!elements.get(1).hasClass("disable")){
-                tmpString=elements.get(0).selectFirst("a[href]").attr("href");
-                contentBean.setNextUrl(tmpString);
-            }else{
+            if(elements.get(2).select("a[href]").size()==0){
                 contentBean.setNextUrl(null);
+            }else{
+                tmpString=elements.get(2).selectFirst("a[href]").attr("href");
+                contentBean.setNextUrl(tmpString);
             }
             Element element=document.select(".list").select(".comic-imgs").first();
             for(Element e:element.getElementsByTag("img")){

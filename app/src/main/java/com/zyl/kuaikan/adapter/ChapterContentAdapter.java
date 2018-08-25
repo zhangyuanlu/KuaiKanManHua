@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.bean.ChapterContentBean;
+import com.zyl.kuaikan.util.Utilities;
 
 public class ChapterContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener{
     private static final String TAG="ChapterContentAdapter";
@@ -45,12 +46,12 @@ public class ChapterContentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         RecyclerView.ViewHolder viewHolder=null;
         switch (viewType){
             case TYPE_HEAD:{
-                View view=layoutInflater.inflate(R.layout.chapter_content_item_foot_head,null);
+                View view=layoutInflater.inflate(R.layout.chapter_content_item_foot_head,parent,false);
                 viewHolder=new HeadViewHolder(view);
                 break;
             }
             case TYPE_NORMAL:{
-                View view=layoutInflater.inflate(R.layout.chapter_content_item_normal,null);
+                View view=layoutInflater.inflate(R.layout.chapter_content_item_normal,parent,false);
                 viewHolder=new NormalViewHolder(view);
                 break;
             }
@@ -65,8 +66,19 @@ public class ChapterContentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if(holder instanceof HeadViewHolder){
             ((HeadViewHolder) holder).bt_next.setTag(contentBean.getNextUrl());
             ((HeadViewHolder) holder).bt_last.setTag(contentBean.getLastUrl());
+            if(contentBean.getNextUrl()==null){
+                ((HeadViewHolder) holder).bt_next.setEnabled(false);
+            }else{
+                ((HeadViewHolder) holder).bt_next.setEnabled(true);
+            }
+            if(contentBean.getLastUrl()==null){
+                ((HeadViewHolder) holder).bt_last.setEnabled(false);
+            }else{
+                ((HeadViewHolder) holder).bt_last.setEnabled(true);
+            }
         }else if(holder instanceof NormalViewHolder){
-            ((NormalViewHolder) holder).draweeView.setImageURI(contentBean.getPictureList().get(position-1));
+            int width= Utilities.getScreenWidth(context);
+            Utilities.setControllerListener(((NormalViewHolder) holder).draweeView,contentBean.getPictureList().get(position-1),width);
         }
     }
 
@@ -107,13 +119,14 @@ public class ChapterContentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
     @Override
     public void onClick(View v) {
+        String url=(String) v.getTag();
         switch (v.getId()){
             case R.id.bt_last:{
-                listener.onClickLast((String) v.getTag());
+                listener.onClickLast(url);
                 break;
             }
             case R.id.bt_next:{
-                listener.onClickNext((String) v.getTag());
+                listener.onClickNext(url);
                 break;
             }
             default:

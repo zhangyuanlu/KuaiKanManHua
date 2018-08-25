@@ -52,11 +52,17 @@ public class ContentActivity extends BaseActivity<ContentContract.Presenter> imp
 
     @Override
     public void onClickNext(String url) {
-        Log.e(TAG,"nexturl="+url);
+        Log.i(TAG,"nexturl="+url);
+        if(url!=null){
+            presenter.loadChapterContent(url);
+        }
     }
 
     @Override
     public void onClickLast(String url) {
-        Log.e(TAG,"lasturl="+url);
+        Log.i(TAG,"lasturl="+url);
+        if(url!=null){
+            presenter.loadChapterContent(url);
+        }
     }
 }
