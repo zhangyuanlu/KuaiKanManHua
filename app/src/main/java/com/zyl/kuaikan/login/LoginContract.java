@@ -33,6 +33,7 @@ public interface LoginContract {
          * 获取验证码失败
          */
         void failedGetCode();
+
     }
     interface Presenter extends IBasePresenter{
         /**

@@ -2,6 +2,7 @@ package com.zyl.kuaikan.home;
 
 import com.zyl.kuaikan.base.IBasePresenter;
 import com.zyl.kuaikan.base.IBaseView;
+import com.zyl.kuaikan.bean.LoginUserBean;
 import com.zyl.kuaikan.bean.PopularCartoon;
 import com.zyl.kuaikan.bean.SearchAutoComp;
 
@@ -39,5 +40,6 @@ public interface HomePageContract {
          * @param keyWord
          */
         void getAutoCompBindList(String keyWord);
+
     }
 }

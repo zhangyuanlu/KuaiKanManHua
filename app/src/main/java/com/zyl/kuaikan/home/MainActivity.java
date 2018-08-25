@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.GridView;
 
+import com.zyl.kuaikan.bean.LoginUserBean;
 import com.zyl.kuaikan.chapterList.ChapterListActivity;
 import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.adapter.CartoonItemAdapter;
@@ -47,9 +49,11 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
         mAdapter=new CartoonItemAdapter(this);
 
         initView();
+        tryToLogin();
         changeDayText();
         presenter.loadPopCartoons(false,0);
     }
+
     private void initView(){
         super.initView(this);
         textViewInput=findViewById(R.id.auto_search);
@@ -158,7 +162,6 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
         return new HomePagerPresenter(this);
     }
 
-
     @Override
     public void setDayPops(List<PopularCartoon> popularCartoons) {
         list.addAll(popularCartoons);
@@ -176,16 +179,6 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
         ArrayAdapter<String> mSearchAdapter=new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line,mSearchArray);
         textViewInput.setAdapter(mSearchAdapter);
         mSearchAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override

@@ -7,4 +7,5 @@ public interface IBasePresenter {
     void detach();
     void addDisposable(Disposable subscription);
     void unDisposable();
+    void tryToLogin(String phone, String pwd, String remember, String code);
 }

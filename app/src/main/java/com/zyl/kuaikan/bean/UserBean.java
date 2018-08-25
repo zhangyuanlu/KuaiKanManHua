@@ -1,13 +1,34 @@
 package com.zyl.kuaikan.bean;
 
-public class UserBean {
-    private int code;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    public int getCode() {
-        return code;
+public class UserBean extends RealmObject{
+    private String name;
+    private String password;
+    private String cookie;
+
+    public String getName() {
+        return name;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(String cookie) {
+        this.cookie = cookie;
     }
 }

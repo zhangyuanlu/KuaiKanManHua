@@ -37,36 +37,6 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
     }
 
     @Override
-    public void tryToLogin(String phone, String pwd, String remember, String code) {
-        RetrofitFactory.getInstance(RetrofitFactory.TYPE_GET_AUTO_KEYLIST)
-                .tryToLogin(phone,pwd,remember,code)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        addDisposable(disposable);
-                    }
-                })
-                .subscribe(new Consumer<LoginUserBean>() {
-                    @Override
-                    public void accept(LoginUserBean user) throws Exception {
-                        if(user.getCode()==LOGIN_SUCCESS){
-                            view.successLogin(user);
-                        }else{
-                            view.failedLogin(user.getCode());
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.e(TAG,throwable.toString());
-                        throwable.printStackTrace();
-                    }
-                });
-    }
-
-    @Override
     public void verifyLogin(CharSequence phone, CharSequence pwd) {
         if(TextUtils.isEmpty(phone)||!Utilities.verifyPhoneNum(phone.toString())){
             view.verifyResult(WRONG_PHONENUM);

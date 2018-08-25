@@ -1,26 +1,27 @@
 package com.zyl.kuaikan.api;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import com.zyl.kuaikan.bean.UserBean;
 
 import java.io.IOException;
 
+import io.realm.Realm;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class AddCookiesInterceptor implements Interceptor {
     private static final String TAG="AddCookiesInterceptor";
-    private Context context;
-    public AddCookiesInterceptor(Context context){
-        this.context=context;
-    }
+
     @Override
     public Response intercept(Chain chain) throws IOException {
         final Request.Builder builder=chain.request().newBuilder();
-        SharedPreferences sharedPreferences=context.getSharedPreferences("cookie",Context.MODE_PRIVATE);
-        String cookie=sharedPreferences.getString("cookie","");
-        builder.addHeader("Cookie",cookie);
+        Realm realm=Realm.getDefaultInstance();
+        realm.beginTransaction();
+        final UserBean userBean=realm.where(UserBean.class).findFirst();
+        realm.commitTransaction();
+        if(userBean!=null) {
+            builder.addHeader("Cookie", userBean.getCookie());
+        }
         return chain.proceed(builder.build());
     }
 }

@@ -9,11 +9,15 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.Stack;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class MyApplication extends Application {
     private static final String TAG="MyApplication";
     private static MyApplication app;
     private static Context mContext;
     private static Stack<Activity> activityStack;
+    public static boolean isOnline=false;
 
     @Override
     public void onCreate() {
@@ -21,6 +25,9 @@ public class MyApplication extends Application {
         app =this;
         mContext=getApplicationContext();
         Fresco.initialize(this);
+        Realm.init(this);
+        RealmConfiguration configuration=new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(configuration);
     }
     public static MyApplication getInstance(){
         return app;
@@ -38,7 +45,6 @@ public class MyApplication extends Application {
         if(activity!=null){
             activityStack.remove(activity);
             activity.finish();
-            activity=null;
         }
     }
     public void finishAllActivity(){

@@ -29,8 +29,8 @@ public class RetrofitFactory {
                     Log.e(TAG,"http msg: "+message);
                 }
             }).setLevel(HttpLoggingInterceptor.Level.BASIC))
-            .addInterceptor(new ReceivedCookiesInterceptor(MyApplication.getApp()))
-            .addInterceptor(new AddCookiesInterceptor(MyApplication.getApp()))
+            .addInterceptor(new ReceivedCookiesInterceptor())
+            .addInterceptor(new AddCookiesInterceptor())
             .connectTimeout(TIMEOUT,TimeUnit.SECONDS)
             .readTimeout(TIMEOUT,TimeUnit.SECONDS)
             .build();

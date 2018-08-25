@@ -1,6 +1,5 @@
 package com.zyl.kuaikan.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +12,9 @@ import android.widget.TextView;
 import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.base.BaseActivity;
 import com.zyl.kuaikan.bean.LoginUserBean;
+import com.zyl.kuaikan.bean.UserBean;
+
+import io.realm.Realm;
 
 public class LoginActivity extends BaseActivity<LoginContract.Presenter> implements LoginContract.View{
     private static final String TAG="LoginActivity";
@@ -33,6 +35,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
     }
 
     private void initView(){
+        super.initView(this);
         et_phone=findViewById(R.id.et_phone);
         et_pwd=findViewById(R.id.et_pwd);
         et_setcode=findViewById(R.id.et_code);
@@ -82,13 +85,25 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
         }
     }
 
+    /**
+     * 登录成功后保存关键信息
+     * @param user 登录用户
+     */
     @Override
     public void successLogin(LoginUserBean user) {
+        super.successLogin(user);
         showToastMsg(getString(R.string.login_success));
-        Intent intent=new Intent();
-        String userName=user.getData().getUser().getNickname();
-        intent.putExtra("userName",userName);
-        setResult(BaseActivity.REQUEST_CODE_LOGIN,intent);
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        if(ck_rember.isChecked()) {
+            UserBean bean = realm.where(UserBean.class).findFirst();
+            bean.setName(et_phone.getText().toString());
+            bean.setPassword(et_pwd.getText().toString());
+        }else{
+            realm.where(UserBean.class).findAll().deleteAllFromRealm();
+        }
+        realm.commitTransaction();
+
         finish();
     }
 
