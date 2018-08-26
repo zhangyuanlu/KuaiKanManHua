@@ -49,7 +49,6 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
         mAdapter=new CartoonItemAdapter(this);
 
         initView();
-        tryToLogin();
         changeDayText();
         presenter.loadPopCartoons(false,0);
     }
