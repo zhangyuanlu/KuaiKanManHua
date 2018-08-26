@@ -13,13 +13,15 @@ import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.base.BaseActivity;
 import com.zyl.kuaikan.bean.LoginUserBean;
 import com.zyl.kuaikan.bean.UserBean;
+import com.zyl.kuaikan.view.CountDwonButton;
 
 import io.realm.Realm;
 
 public class LoginActivity extends BaseActivity<LoginContract.Presenter> implements LoginContract.View{
     private static final String TAG="LoginActivity";
     private EditText et_phone,et_pwd,et_setcode;
-    private Button bt_getcode,bt_foregt,bt_login;
+    private Button bt_foregt,bt_login;
+    private CountDwonButton bt_getcode;
     private CheckBox ck_rember;
     private TextView bt_register;
     private LinearLayout layout_sms_code,layout_login_progress;
@@ -62,6 +64,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
         super.onClick(v);
         switch (v.getId()){
             case R.id.bt_codec:{
+                bt_getcode.startCountDown(this);
                 presenter.getVerifyCode(et_phone.getText().toString(),"5");
                 break;
             }

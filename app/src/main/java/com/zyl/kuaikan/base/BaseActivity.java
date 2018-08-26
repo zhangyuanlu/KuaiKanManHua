@@ -19,6 +19,7 @@ import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.applicaiton.MyApplication;
 import com.zyl.kuaikan.bean.LoginUserBean;
 import com.zyl.kuaikan.bean.UserBean;
+import com.zyl.kuaikan.concern.ConcernActivity;
 import com.zyl.kuaikan.home.MainActivity;
 import com.zyl.kuaikan.login.LoginActivity;
 
@@ -26,7 +27,7 @@ import io.realm.Realm;
 
 public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatActivity implements IBaseView,View.OnClickListener{
     private static final String TAG="BaseActivity";
-    private static final int RESULTCODE_LOGIN_SUCCESS =100;
+    private static final int REQUESTCODE_LOGIN_SUCCESS =100;
     protected P presenter;
     public Context context;
     private TextView tv_homePager;
@@ -34,6 +35,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
     private TextView tv_login;
     private TextView tv_register;
     private TextView tv_attention;
+    private static boolean isOnline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +69,10 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
      */
     @Override
     public void successLogin(LoginUserBean user) {
-        MyApplication.isOnline=true;
+        isOnline=true;
         Intent intent=new Intent();
         intent.putExtra("name",user.getData().getUser().getNickname());
-        setResult(RESULTCODE_LOGIN_SUCCESS,intent);
+        setResult(REQUESTCODE_LOGIN_SUCCESS,intent);
         tv_register.setVisibility(View.GONE);
         tv_login.setText(user.getData().getUser().getNickname());
     }
@@ -78,6 +80,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
     @Override
     public void failedLogin(int resultCode) {
         Log.e(TAG,"failedLogin,resultCode="+resultCode);
+        isOnline=false;
         tv_register.setVisibility(View.VISIBLE);
         tv_login.setText(getString(R.string.login));
     }
@@ -103,6 +106,9 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
         tv_homePager.setOnClickListener(listener);
         tv_login.setOnClickListener(listener);
         tv_register.setOnClickListener(listener);
+        if(this instanceof ConcernActivity){
+            tv_attention.setTextColor(Color.parseColor("#FFE600"));
+        }
     }
 
     @Override
@@ -118,10 +124,10 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
                 break;
             }
             case R.id.tv_login:{
-                if(!MyApplication.isOnline) {
-                    startActivity(this, LoginActivity.class, RESULTCODE_LOGIN_SUCCESS);
+                if(!isOnline) {
+                    startActivity(this, LoginActivity.class, REQUESTCODE_LOGIN_SUCCESS);
                 }else{
-                    MyApplication.isOnline=false;
+                    isOnline=false;
                     tv_register.setVisibility(View.VISIBLE);
                     tv_login.setText(getString(R.string.login));
                     Realm realm=Realm.getDefaultInstance();
@@ -136,7 +142,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
                 break;
             }
             case R.id.tv_attention:{
-
+                startActivity(new Intent(this,ConcernActivity.class));
                 break;
             }
         }
@@ -149,7 +155,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode== RESULTCODE_LOGIN_SUCCESS &&requestCode== RESULTCODE_LOGIN_SUCCESS){
+        if(resultCode== REQUESTCODE_LOGIN_SUCCESS &&requestCode== REQUESTCODE_LOGIN_SUCCESS){
             String name=data.getStringExtra("name");
             tv_login.setText(name);
             tv_register.setVisibility(View.GONE);

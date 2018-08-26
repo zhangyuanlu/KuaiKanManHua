@@ -17,7 +17,6 @@ public class MyApplication extends Application {
     private static MyApplication app;
     private static Context mContext;
     private static Stack<Activity> activityStack;
-    public static boolean isOnline=false;
 
     @Override
     public void onCreate() {

@@ -21,6 +21,7 @@ public class RetrofitFactory {
     public static final int TYPE_GET_CHAPTERCONTENT=102;
     public static final int TYPE_GET_AUTO_KEYLIST=200;
     public static final int TYPE_AUTO_LOGIN=300;
+    public static final int TYPE_GET_TOPICS=400;
 
     private static OkHttpClient okHttpClient=new OkHttpClient.Builder()
             .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -50,6 +51,7 @@ public class RetrofitFactory {
                         .create(RetrofitService.class);
                 break;
             }
+            case TYPE_GET_TOPICS:
             case TYPE_AUTO_LOGIN:
             case TYPE_GET_AUTO_KEYLIST:{
                 retrofitService = new Retrofit.Builder()

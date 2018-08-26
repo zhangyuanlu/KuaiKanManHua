@@ -60,7 +60,7 @@ public interface RetrofitService {
      * 获得当前用户关注列表,需要cookie
      * @return
      */
-    @GET("web/fav/topics}")
+    @GET("web/fav/topics")
     Observable<UserTopicsBean> getUserTpoics();
 
     /**
