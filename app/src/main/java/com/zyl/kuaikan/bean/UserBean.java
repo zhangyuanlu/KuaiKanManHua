@@ -6,6 +6,7 @@ import io.realm.annotations.PrimaryKey;
 public class UserBean extends RealmObject{
     private String name;
     private String password;
+    private boolean remember;
     private String cookie;
 
     public String getName() {
@@ -30,5 +31,13 @@ public class UserBean extends RealmObject{
 
     public void setCookie(String cookie) {
         this.cookie = cookie;
+    }
+
+    public boolean isRemember() {
+        return remember;
+    }
+
+    public void setRemember(boolean remember) {
+        this.remember = remember;
     }
 }

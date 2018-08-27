@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +15,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.GridView;
 
-import com.zyl.kuaikan.bean.LoginUserBean;
 import com.zyl.kuaikan.chapterList.ChapterListActivity;
 import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.adapter.CartoonItemAdapter;
@@ -85,6 +85,22 @@ public class MainActivity extends BaseActivity<HomePageContract.Presenter> imple
         super.onClick(v);
         switch (v.getId()){
             case R.id.bt_search:{
+                if(!TextUtils.isEmpty(textViewInput.getText())){
+                    String keyWord=textViewInput.getText().toString();
+                    int id=0;
+                    for(SearchAutoComp.DataBean.TopicBean topicBean:autoComps){
+                        if(topicBean.getTitle().equals(keyWord)){
+                            id=topicBean.getId();
+                            break;
+                        }
+                    }
+                    if(id!=0){
+                        Intent intent=new Intent(this,ChapterListActivity.class);
+                        String url="/web/topic/"+id;
+                        intent.putExtra("url",url);
+                        startActivity(intent);
+                    }
+                }
                 break;
             }
             case R.id.bt_day1:{

@@ -103,6 +103,11 @@ public class Html2BeanFactory extends Converter.Factory {
             chapterListBean.setAuthor(tmpString);
             tmpString=element.selectFirst("div.switch-content").getElementsByTag("p").get(0).text();
             chapterListBean.setBrief(tmpString);
+            if(element.select(".btn").select(".btn-primary").select(".btn-follow").select(".followed")==null){
+                chapterListBean.setFollowed(false);
+            }else{
+                chapterListBean.setFollowed(true);
+            }
             tmpString=element.selectFirst("div.num").getElementsByTag("li").get(1).selectFirst("span").text();
             chapterListBean.setHeatIndex(tmpString.substring(1,tmpString.length()));
             tmpString=element.selectFirst("div.num").getElementsByTag("li").get(2).selectFirst("span").text();

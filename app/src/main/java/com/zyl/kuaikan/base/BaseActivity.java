@@ -19,6 +19,7 @@ import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.applicaiton.MyApplication;
 import com.zyl.kuaikan.bean.LoginUserBean;
 import com.zyl.kuaikan.bean.UserBean;
+import com.zyl.kuaikan.chapterList.ChapterListActivity;
 import com.zyl.kuaikan.concern.ConcernActivity;
 import com.zyl.kuaikan.home.MainActivity;
 import com.zyl.kuaikan.login.LoginActivity;
@@ -58,7 +59,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
     public void tryToLogin(){
         Realm realm=Realm.getDefaultInstance();
         final UserBean userBean=realm.where(UserBean.class).findFirst();
-        if(userBean!=null) {
+        if((userBean!=null&&userBean.isRemember())||isOnline) {
             presenter.tryToLogin(userBean.getName(),userBean.getPassword(),"1",null);
         }
     }
@@ -108,6 +109,10 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
         tv_register.setOnClickListener(listener);
         if(this instanceof ConcernActivity){
             tv_attention.setTextColor(Color.parseColor("#FFE600"));
+            tv_homePager.setTextColor(Color.WHITE);
+        }else if(this instanceof LoginActivity){
+            tv_login.setTextColor(Color.parseColor("#FFE600"));
+            tv_homePager.setTextColor(Color.WHITE);
         }
     }
 
@@ -124,16 +129,16 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
                 break;
             }
             case R.id.tv_login:{
+                Realm realm=Realm.getDefaultInstance();
+                realm.beginTransaction();
+                realm.where(UserBean.class).findAll().deleteAllFromRealm();
+                realm.commitTransaction();
                 if(!isOnline) {
                     startActivity(this, LoginActivity.class, REQUESTCODE_LOGIN_SUCCESS);
                 }else{
                     isOnline=false;
                     tv_register.setVisibility(View.VISIBLE);
                     tv_login.setText(getString(R.string.login));
-                    Realm realm=Realm.getDefaultInstance();
-                    realm.beginTransaction();
-                    realm.where(UserBean.class).findAll().deleteAllFromRealm();
-                    realm.commitTransaction();
                 }
                 break;
             }

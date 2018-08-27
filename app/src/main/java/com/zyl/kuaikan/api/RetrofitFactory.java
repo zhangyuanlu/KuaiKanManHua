@@ -22,12 +22,14 @@ public class RetrofitFactory {
     public static final int TYPE_GET_AUTO_KEYLIST=200;
     public static final int TYPE_AUTO_LOGIN=300;
     public static final int TYPE_GET_TOPICS=400;
+    public static final int TYPE_FOLLOW_NOW=500;
+    public static final int TYPE_FOLLOW_CANCEL=501;
 
     private static OkHttpClient okHttpClient=new OkHttpClient.Builder()
             .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
                 public void log(String message) {
-                    Log.e(TAG,"http msg: "+message);
+                    Log.i(TAG,"http msg: "+message);
                 }
             }).setLevel(HttpLoggingInterceptor.Level.BASIC))
             .addInterceptor(new ReceivedCookiesInterceptor())
@@ -51,6 +53,8 @@ public class RetrofitFactory {
                         .create(RetrofitService.class);
                 break;
             }
+            case TYPE_FOLLOW_CANCEL:
+            case TYPE_FOLLOW_NOW:
             case TYPE_GET_TOPICS:
             case TYPE_AUTO_LOGIN:
             case TYPE_GET_AUTO_KEYLIST:{

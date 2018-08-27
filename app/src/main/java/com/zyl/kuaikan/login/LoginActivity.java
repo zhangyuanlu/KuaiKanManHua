@@ -98,13 +98,10 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
         showToastMsg(getString(R.string.login_success));
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        if(ck_rember.isChecked()) {
-            UserBean bean = realm.where(UserBean.class).findFirst();
-            bean.setName(et_phone.getText().toString());
-            bean.setPassword(et_pwd.getText().toString());
-        }else{
-            realm.where(UserBean.class).findAll().deleteAllFromRealm();
-        }
+        UserBean bean = realm.where(UserBean.class).findFirst();
+        bean.setName(et_phone.getText().toString());
+        bean.setPassword(et_pwd.getText().toString());
+        bean.setRemember(ck_rember.isChecked());
         realm.commitTransaction();
 
         finish();

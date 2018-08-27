@@ -4,12 +4,14 @@ package com.zyl.kuaikan.api;
 import com.zyl.kuaikan.bean.ChapterContentBean;
 import com.zyl.kuaikan.bean.ChapterListBean;
 import com.zyl.kuaikan.bean.LoginUserBean;
+import com.zyl.kuaikan.bean.ResonseBean;
 import com.zyl.kuaikan.bean.UserTopicsBean;
 import com.zyl.kuaikan.bean.SearchAutoComp;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -78,4 +80,20 @@ public interface RetrofitService {
      */
     @GET("{url}")
     Observable<ChapterContentBean> getChapterContent(@Path("url")String url);
+
+    /**
+     * 关注该作品
+     * @param id
+     * @return
+     */
+    @POST("web/topic/{id}/fav")
+    Observable<ResonseBean> tryToFollow(@Path("id") String id);
+
+    /**
+     * 取消关注该作品
+     * @param id
+     * @return
+     */
+    @DELETE("web/topic/{id}/fav")
+    Observable<ResonseBean> tryCancelFollow(@Path("id") String id);
 }

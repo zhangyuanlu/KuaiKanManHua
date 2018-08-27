@@ -3,6 +3,7 @@ package com.zyl.kuaikan.chapterList;
 import com.zyl.kuaikan.base.IBasePresenter;
 import com.zyl.kuaikan.base.IBaseView;
 import com.zyl.kuaikan.bean.ChapterListBean;
+import com.zyl.kuaikan.bean.ResonseBean;
 
 public interface ChapterListContract {
 
@@ -12,6 +13,8 @@ public interface ChapterListContract {
          * @param bean
          */
         void setChapterList(ChapterListBean bean);
+        void followResult(ResonseBean bean);
+        void cancelFollowResult(ResonseBean bean);
     }
     interface Presenter extends IBasePresenter{
         /**
@@ -19,6 +22,8 @@ public interface ChapterListContract {
          * @param url
          */
         void loadChapterList(String url);
+        void followNow(String id);
+        void cancelFollow(String id);
     }
 
 }

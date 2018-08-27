@@ -37,7 +37,7 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public interface OnRecyclerViewItemClickListener{
         void onClickChapter(String url);
-        void onFollow();
+        void onFollow(boolean followed);
         void onFirstChapter(String url);
         void onCommonCartoon(String url);
     }
@@ -90,6 +90,11 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((HeadViewHolder) holder).tv_brief.setText(chapterListBean.getBrief());
             ((HeadViewHolder) holder).tv_heat.setText(chapterListBean.getHeatIndex());
             ((HeadViewHolder) holder).tv_praise.setText(chapterListBean.getPraiseIndex());
+            if(chapterListBean.isFollowed()){
+                ((HeadViewHolder) holder).bt_follow.setText(mContext.getString(R.string.followOn));
+            }else{
+                ((HeadViewHolder) holder).bt_follow.setText(mContext.getString(R.string.follow));
+            }
         }else if(holder instanceof NormalViewHolder){
             ((NormalViewHolder) holder).draweeView.setImageURI(chapterListBean.getChapterItems().get(position-1).getChapterCoverUrl());
             ((NormalViewHolder) holder).tv_title.setText(chapterListBean.getChapterItems().get(position-1).getChapterTitle());
@@ -161,7 +166,7 @@ public class ChapterListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View view) {
                     if(mListener!=null) {
-                        mListener.onFollow();
+                        mListener.onFollow(chapterListBean.isFollowed());
                     }
                 }
             });

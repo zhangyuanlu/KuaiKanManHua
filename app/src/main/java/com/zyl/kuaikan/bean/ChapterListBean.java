@@ -10,6 +10,7 @@ public class ChapterListBean {
     private String heatIndex;
     private String praiseIndex;
     private String firstChapterUrl;
+    private boolean isFollowed;
     private List<ChapterItem> chapterItems;
     private List<CommonCartoon> commonCartoons;
 
@@ -85,6 +86,14 @@ public class ChapterListBean {
         this.commonCartoons = commonCartoons;
     }
 
+    public boolean isFollowed() {
+        return isFollowed;
+    }
+
+    public void setFollowed(boolean followed) {
+        isFollowed = followed;
+    }
+
     @Override
     public String toString() {
         return "ChapterListBean{" +
@@ -95,6 +104,7 @@ public class ChapterListBean {
                 ", heatIndex='" + heatIndex + '\'' +
                 ", praiseIndex='" + praiseIndex + '\'' +
                 ", firstChapterUrl='" + firstChapterUrl + '\'' +
+                ", isFollowed='" + isFollowed + '\'' +
                 '}';
     }
 

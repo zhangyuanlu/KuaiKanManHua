@@ -1,15 +1,18 @@
 package com.zyl.kuaikan.chapterList;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.zyl.kuaikan.R;
 import com.zyl.kuaikan.adapter.ChapterListAdapter;
 import com.zyl.kuaikan.base.BaseActivity;
 import com.zyl.kuaikan.bean.ChapterListBean;
+import com.zyl.kuaikan.bean.ResonseBean;
 import com.zyl.kuaikan.content.ContentActivity;
 import com.zyl.kuaikan.view.CustomRecyclerView;
 
@@ -18,6 +21,7 @@ public class ChapterListActivity extends BaseActivity<ChapterListContract.Presen
     private String url;
     private ChapterListAdapter chapterListAdapter;
     private CustomRecyclerView recyclerView;
+    private ChapterListBean chapterListBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,30 @@ public class ChapterListActivity extends BaseActivity<ChapterListContract.Presen
 
     @Override
     public void setChapterList(ChapterListBean bean) {
-        chapterListAdapter.bindData(bean);
+        chapterListBean=bean;
+        chapterListAdapter.bindData(chapterListBean);
+        chapterListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void followResult(ResonseBean bean) {
+        showToastMsg(bean.getMessage());
+        if(bean.getCode()==200){
+            chapterListBean.setFollowed(true);
+        }else{
+            chapterListBean.setFollowed(false);
+        }
+        chapterListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void cancelFollowResult(ResonseBean bean) {
+        showToastMsg(bean.getMessage());
+        if(bean.getCode()==200){
+            chapterListBean.setFollowed(false);
+        }else{
+            chapterListBean.setFollowed(true);
+        }
         chapterListAdapter.notifyDataSetChanged();
     }
 
@@ -61,8 +88,13 @@ public class ChapterListActivity extends BaseActivity<ChapterListContract.Presen
     }
 
     @Override
-    public void onFollow() {
-        Log.e(TAG,"onfollow");
+    public void onFollow(boolean followed) {
+        String id=url.split("/")[3];
+        if(!followed) {
+            presenter.followNow(id);
+        }else{
+            presenter.cancelFollow(id);
+        }
     }
 
     @Override

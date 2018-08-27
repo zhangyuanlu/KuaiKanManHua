@@ -31,7 +31,11 @@ public class ConcernPresenter extends BasePresenterImpl<ConcernContract.View>imp
                 .subscribe(new Consumer<UserTopicsBean>() {
                     @Override
                     public void accept(UserTopicsBean topicsBean) throws Exception {
-                        view.setConcern(topicsBean);
+                        if(topicsBean.getData().getTopics()==null){
+                            view.noData(topicsBean.getMessage());
+                        }else{
+                            view.setConcern(topicsBean);
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
