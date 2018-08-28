@@ -7,3 +7,7 @@
 如果前端代码发生改变，可能造成整个网页解析失败。
 
 由于是第一次在项目中使用多个流行框架，代码的复用性或许还有待提高，如有错误或需要改进的地方，欢迎指正。
+![image](https://github.com/zhangyuanlu/KuaiKanManHua/blob/master/screenrecord/kk1.gif)
+![image](https://github.com/zhangyuanlu/KuaiKanManHua/blob/master/screenrecord/kk2.gif)
+![image](https://github.com/zhangyuanlu/KuaiKanManHua/blob/master/screenrecord/kk3.gif)
+![image](https://github.com/zhangyuanlu/KuaiKanManHua/blob/master/screenrecord/kk4.gif)
