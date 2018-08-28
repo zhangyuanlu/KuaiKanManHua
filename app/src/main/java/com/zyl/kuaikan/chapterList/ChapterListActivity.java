@@ -89,7 +89,8 @@ public class ChapterListActivity extends BaseActivity<ChapterListContract.Presen
 
     @Override
     public void onFollow(boolean followed) {
-        String id=url.split("/")[3];
+        String[] s=url.split("/");
+        String id=s[s.length-1];
         if(!followed) {
             presenter.followNow(id);
         }else{
